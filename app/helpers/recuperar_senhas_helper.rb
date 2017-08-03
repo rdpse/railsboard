@@ -1,0 +1,2 @@
+module RecuperarSenhasHelper
+end

@@ -1,0 +1,58 @@
+<% provide(:title, "Atendimento") %>
+<div class="right_col" role="main">
+  <div class="">
+    <div class="page-title">
+      <div class="title_left">
+        <h3>Todos os tickets</h3>
+        <br />
+      </div>
+    </div>
+
+    <div class="clearfix"></div>
+
+    <div class="x_content">
+      <% if @tickets.present? %>
+        <div class="table-responsive">
+          <table class="table table-striped jambo_table">
+            <thead>
+              <tr class="headings">
+                <th class="column-title"># </th>
+                <th class="column-title">Aberto em</th>
+                <th class="column-title">Assunto</th>
+                <th class="column-title">Última resposta</th>
+                <th class="column-title">Estado</th>
+                <th class="column-title no-link last"><span class="nobr">Acção</span>
+                </th>
+              </tr>
+            </thead>
+
+            <%# TODO: if ticket has been replied to by admin, make the whole row green; color status column values %>
+            <tbody>
+              <% @tickets.each do |t| %>
+                <tr class="<%= cycle('even', 'odd') %> pointer" data-link="<%= ticket_path(t) %>">
+                  <td class=" "><%= t.id %></td>
+                  <td class=" "><%= t.created_at.strftime("%Y/%m/%d") %></td>
+                  <td class=" "><%= t.assunto %></td>
+                  <td class=" "><%= t.ticket_respostas.last.respondente.nome %></td>
+                  <td class="<%= ticket_status_color(t) %>"><%= ticket_status(t) %></td>
+                  <td class=" last">
+                    <%= link_to "Ver", ticket_path(t) %>
+                    <% unless t.fechado?  %>
+                      <%= link_to "/ Fechar", ticket_fechar_path(t), method: :post %>
+                    <% else %>
+                      <%= link_to "/ Reabrir", ticket_reabrir_path(t), method: :post %>
+                    <% end %>
+                  </td>
+                </tr>
+              <% end %>
+            </tbody>
+          </table>
+        </div> <!-- table_responsive -->
+      <% else %>
+        <p class="text-muted well well-sm no-shadow">
+          <i>Ainda não há tickets associados à sua conta.</i>
+        </p>
+      <% end %>
+    </div> <!-- x_content -->
+  </div> <!-- below right_col -->
+</div> <!-- right_col -->

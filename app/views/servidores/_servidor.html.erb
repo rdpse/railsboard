@@ -1,0 +1,167 @@
+  <div class="row">
+    <div class="col-md-8 col-sm-8 col-xs-12">
+      <div class="x_panel">
+        <div class="x_title">
+          <h2>
+            <small>
+            <% if host.reiniciando %>
+              <span class="label label-warning" style="color: #fefefe; margin-left: -11px;">REINICIANDO</span> 
+            <% elsif host.alive %>
+              <span class="label label-success" style="color: #fefefe; margin-left: -11px;">ON</span> 
+            <% else %>
+              <span class="label label-danger" style="color: #fefefe; margin-left: -11px;">OFF</span>
+            <% end %>
+            </small>
+            &nbsp;
+            <%= host.hostname + " (#{host.ip_principal})" %>
+            <% if host.faturado?%>
+              <small>
+                <span class="label label-danger" style="color: #fefefe; margin-left: -5px;">
+                  <%= link_to "RENOVAR", fatura_path(host.fatura_do_mes), style: "color: #fefefe;" %>
+                </span>
+              </small>
+            <% end %>
+          </h2> 
+          <ul class="nav navbar-right panel_toolbox">
+            <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
+            </li>
+            <li><a class="close-link"><i class="fa fa-close"></i></a>
+            </li>
+          </ul>
+          <div class="clearfix"></div>
+        </div>
+
+        <ul class="stats-overview hidden-xs">
+          <li>
+            <span class="name"> Plano </span>
+            <span class="value text-info"> <%= host.produto.present? ? host.produto.nome : "Especial" %> </span>
+          </li>
+          <li>
+            <span class="name"> Vencimento </span>
+            <span class="value text-info"> <%= host.vencimento.to_s %> </span>
+          </li>
+          <li class="hidden-phone">
+            <span class="name"> Sistema </span>
+            <span class="value text-info"> <%= host.os %> </span>
+          </li>
+        </ul>
+
+        <div class="x_content" style="margin-bottom: -1.5em;">
+          <% unless host.windows %>
+            <% razao_hdd = razao(host.hdd_utilizado, host.hdd_total) %>
+            <div class="widget_summary">
+              <div class="w_left w_25">
+                <i class="fa fa-hdd-o"></i> &nbsp;&nbsp; <span class="hidden-xs">Espaço</span>
+              </div>
+              <div class="w_center w_55">
+                <div class="progress">
+                  <div class="progress-bar bg-<%= pg_bar_color(razao_hdd) %>" role="progressbar" aria-valuenow="<%= razao_hdd %>" aria-valuemin="0" aria-valuemax="100" style="width: <%= razao_hdd %>%;">
+                    <span class="sr-only"><%= razao_hdd %> Cheio</span>
+                  </div>
+                </div>
+              </div>
+              <div class="w_right w_20">
+                <span><%= human_readable(host.hdd_utilizado) %> <span class="hidden-xs">/ <%= human_readable(host.hdd_total) %></span></span>
+              </div>
+              <div class="clearfix"></div>
+            </div>
+
+            <% razao_ram = razao(host.ram_utilizado, host.ram_total) %>
+            <div class="widget_summary">
+              <div class="w_left w_25">
+                <i class="fa fa-database"></i> &nbsp;&nbsp; <span class="hidden-xs">Memória</span>
+              </div>
+              <div class="w_center w_55">
+                <div class="progress">
+                  <div class="progress-bar bg-<%= pg_bar_color(razao_ram) %>" role="progressbar" aria-valuenow="<%= razao_ram %>" aria-valuemin="0" aria-valuemax="100" style="width: <%= razao_ram %>%;">
+                    <span class="sr-only"><%= razao_ram %> Cheio</span>
+                  </div>
+                </div>
+              </div>
+              <div class="w_right w_20">
+                <span><%= human_readable(host.ram_utilizado) %> <span class="hidden-xs">/ <%= human_readable(host.ram_total) %></span></span>
+              </div>
+              <div class="clearfix"></div>
+            </div>
+
+            <div class="widget_summary">
+              <div class="w_left w_25">
+                <i class="fa fa-wifi"></i> &nbsp; <span class="hidden-xs">Tráfego</span>
+              </div>
+              <div class="w_center w_55">
+                <div class="progress">
+                  <div class="progress-bar bg-green" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="width: 1%;">
+                    <span class="sr-only">0% Utilizado</span>
+                  </div>
+                </div>
+              </div>
+              <div class="w_right w_20">
+                <span><%= human_readable(host.trafego_usado) %> <span class="hidden-xs">/ &infin;</span></span>
+              </div>
+              <div class="clearfix"></div>
+            </div>
+            <br>
+          <% else %>
+            <p class="text-muted well well-sm no-shadow">
+              <i>De momento não é possível monitorizar servidores com o sistema operacional Windows.</i>
+            </p>
+          <% end %>
+            <div class="col-md-6 col-sm-6 col-xs-12 col-md-offset-5">
+              <%= button_to 'Reiniciar', {controller: "servidores", action: "reiniciar", hostname: host.hostname}, {class: "btn btn-primary", remote: true} %>
+
+              <% if host.cloudflare? %>
+                <%= button_to 'Limpar cache', {controller: "servidores", action: "limpar_cache", hostname: host.hostname}, {class: "btn btn-primary", remote: true} %>
+              <% end %>
+
+              <% if host.rtorrent %>
+                <%# can't get links and buttons to stay side-by-side; hence the hack %>
+                <%# TODO: redirect with login details %>
+                <%= button_to 'ruTorrent', "#", {class: "btn btn-default", method: :get, onclick: "window.open('http://#{host.ip_principal}/rutorrent', '_blank')"} %>
+              <% end %>
+            </div>
+          </div>
+
+
+      </div>
+    </div>
+    <div class="col-md-4 col-sm-4 col-xs-12">
+      <div class="x_panel">
+        <div class="x_title">
+          <h2>Intervenções recentes</h2>
+          <ul class="nav navbar-right panel_toolbox">
+            <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
+            </li>
+            <li><a class="close-link"><i class="fa fa-close"></i></a>
+            </li>
+          </ul>
+          <div class="clearfix"></div>
+        </div>
+        <div class="x_content">
+          <div class="dashboard-widget-content">
+
+            <ul class="list-unstyled timeline widget">
+              <% if host.intervencoes.present? %>
+                <% host.intervencoes.last(2).reverse.each do |i| %>
+                  <li>
+                    <div class="block">
+                      <div class="block_content">
+                        <h2 class="title">
+                          <a><%= i.nome %></a>
+                        </h2>
+                        <div class="byline">
+                          Estado: <span><%= i.status.capitalize.gsub('_', ' ') + " | " + data_intervencao(i) %></span>
+                        </div>
+                        <p class="excerpt"><%= i.descricao %></p>
+                      </div>
+                    </div>
+                  </li>
+                <% end %>
+              <% else %>
+                <i>Sem intervenções</i>
+              <% end %>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>

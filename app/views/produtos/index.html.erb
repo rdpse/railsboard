@@ -1,0 +1,40 @@
+    <div class="row">
+    <% @produtos.find_each do |p| %>
+        <div class="col-md-3 col-sm-6 col-xs-12">
+            <div class="panel panel-primary">
+                <div class="panel-heading">
+                    <h3 class="panel-title">
+                        <%= p.nome %></h3>
+                </div>
+                <div class="panel-body">
+                    <div class="the-price">
+                        <h1><%= valor_formatado("BRL", p.valor.to_i) %><span class="subscript">/m</span></h1>
+                    </div>
+                    <table class="table">
+                        <tr>
+                            <td><%= human_readable(p.espaco).to_i %> GiB </td>
+                        </tr>
+                        <tr class="active">
+                            <td><%= human_readable(p.ram).to_i %> GB </td>
+                        </tr>
+                        <tr>
+                            <td> FTP / SSH <%= "/ X2Go" if p.x2go %> </td>
+                        </tr>
+                        <tr class="active">
+                            <td> rTorrent + ruTorrent </td>
+                        </tr>
+                        <tr>
+                            <td> Tráfego Ilimitado </td>
+                        </tr>
+                        <tr class="active">
+                            <td> Conexão <%= p.banda %> </td>
+                        </tr>
+                    </table>
+                </div>
+                <div class="panel-footer">
+							     <%= button_to "Assinar", "#", class: "btn btn-success" %>
+                </div>
+            </div>
+        </div>
+    <% end %>
+    </div>

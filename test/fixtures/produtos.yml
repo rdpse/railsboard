@@ -1,0 +1,19 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  nome: MyString
+  espaco: 
+  espaco: 
+  ram: 
+  ram: 
+  banda: MyString
+  x2go: false
+
+two:
+  nome: MyString
+  espaco: 
+  espaco: 
+  ram: 
+  ram: 
+  banda: MyString
+  x2go: false

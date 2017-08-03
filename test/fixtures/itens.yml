@@ -1,0 +1,13 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  valor: 
+  descricao: MyText
+  quantidade: 1
+  pago: false
+
+two:
+  valor: 
+  descricao: MyText
+  quantidade: 1
+  pago: false

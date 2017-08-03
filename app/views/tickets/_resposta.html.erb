@@ -1,0 +1,82 @@
+<div class="row">
+  <div class="col-md-12 col-xs-12">
+    <div class="x_panel">
+      <% if @respostas.first == resposta %>
+        <div class="x_title">
+          <h2><%= @ticket.assunto %></h2>
+          <ul class="nav navbar-right panel_toolbox">
+            <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
+            </li>
+            <li><a class="close-link"><i class="fa fa-close"></i></a>
+            </li>
+          </ul>
+          <div class="clearfix"></div>
+        </div>
+      <% end %>
+      <div class="x_content">
+        <div class="row">
+                  <!-- CONTENT MAIL -->
+                  <div class="col-sm-12 mail_view">
+                    <div class="inbox-body">
+                      <div class="sender-info">
+                        <div class="row">
+                          <div class="col-md-12 col-xs-12">
+                            <strong>
+                              <%= resposta.respondente.nome %>    
+                            </strong>
+                            <a class="sender-dropdown"><i class="fa fa-chevron-down"></i></a>
+
+
+                            <div class="pull-right">
+                              <span class="date"><%= resposta.created_at.strftime("%Y/%m/%d %H:%M") %> </span>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="view-mail pull-left" style="margin-top: 0.75em">
+                        <%= formatar(resposta.mensagem) %>
+                      </div>
+                      <div class="pull-right" style="margin-top: 1.25em">
+                        <% if resposta.respondente_type == "Admin" %>
+                          <span class="label label-danger">A</span>
+                          <%# <a class="sender-dropdown"><i style="color: #d9534f;" class="fa fa-terminal"></i></a> %>
+                        <% end %>
+                      </div>
+                     <% unless resposta.anexos.empty? %> 
+                      <div class="attachment">
+                        <p>
+                        <span><i class="fa fa-paperclip"></i> <%= pluralize(resposta.anexos.count.to_s, " anexo", " anexos")  %> </span>
+                        <%# <a href="#"> — Baixar todos os anexos</a>%>
+                       
+                        </p>
+                        <ul>
+                        <% resposta.anexos.each do |anexo| %> 
+                          <li>
+                            <%= link_to anexo.url, target: '_blank', class: 'atch-thumb' do %>
+                              <%= image_tag anexo.url %>
+                            <% end %>
+                            </a>
+
+                            <div class="file-name">
+                              <%= anexo_nome(anexo) %>
+                            </div>
+                            <span><%= human_readable(anexo.size) %></span>
+
+
+                            <div class="links">
+                              <%= link_to "Ver -", anexo.url, target: '_blank' %>
+                              <%= link_to "Download", anexo.url, download: anexo_nome(anexo) %>
+                            </div>
+                          </li>
+                        <% end %>
+                        </ul>
+                      </div>
+                      <% end %>
+                    </div>
+                  </div> 
+                  <!-- /CONTENT MAIL -->
+        </div> <%# row %>
+      </div> <%# x_content %>
+    </div> <%# x_panel %>
+  </div> <%# col div %>
+</div> <%# row %>

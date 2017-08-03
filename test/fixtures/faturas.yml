@@ -1,0 +1,21 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  vencimento: 2017-03-30
+  valor: 
+  recebido: 
+  paga_em: 2017-03-30
+  via_de_pagamento: 1
+  moeda: 1
+  estado: 1
+  notas: MyText
+
+two:
+  vencimento: 2017-03-30
+  valor: 
+  recebido: 
+  paga_em: 2017-03-30
+  via_de_pagamento: 1
+  moeda: 1
+  estado: 1
+  notas: MyText

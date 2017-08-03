@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="pt">
+  <head>
+		<%= csrf_meta_tags %>
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+		<!-- Meta, title, CSS, favicons, etc. -->
+		<meta charset="utf-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+    <%= stylesheet_link_tag 'produtos', media: 'all' %>
+    <%= favicon_link_tag %>
+    <title><%= full_title(yield(:title)) %></title>
+  </head>
+
+  <body>
+		<div class="planos">
+      <div class="container">
+        <div id="logo">
+				  <a href="https://elitebox.com.br"> <img id="logo-img" src="https://elitebox.com.br/logo.png" /> </a>
+        </div>
+        <br>
+        <br>
+				<%= yield %>
+				<%= javascript_include_tag 'application' %>
+      </div>
+		</div>
+  </body>
+</html>

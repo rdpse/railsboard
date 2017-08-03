@@ -1,0 +1,15 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  nome: MyString
+  sigla: MyString
+  api_url: MyText
+  api_sk: MyString
+  api_pk: MyString
+
+two:
+  nome: MyString
+  sigla: MyString
+  api_url: MyText
+  api_sk: MyString
+  api_pk: MyString

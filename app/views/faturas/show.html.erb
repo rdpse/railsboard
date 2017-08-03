@@ -1,0 +1,144 @@
+<% provide(:title, "Fatura ##{@fatura.id}") %>
+<div class="right_col" role="main" data-fatura-id="<%= @fatura.id %>">
+  <div class="">
+    <div class="page-title">
+      <div class="title_left">
+        <h3>Fatura #<%= @fatura.id %></h3>
+        <br />
+      </div>
+    </div>
+
+    <div class="clearfix"></div>
+
+    <div class="row">
+      <div class="col-xs-12">
+        <div class="x_panel">
+          <div class="x_title">
+            <h2>Detalhes</h2>
+            <ul class="nav navbar-right panel_toolbox">
+              <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
+              </li>
+              <li><a class="close-link"><i class="fa fa-close"></i></a>
+              </li>
+            </ul>
+            <div class="clearfix"></div>
+          </div>
+          <div class="x_content">
+
+            <section class="content invoice">
+              <!-- title row -->
+              <div class="row">
+                <div class="col-xs-12 invoice-header">
+                  <% if @fatura.paga? %>
+                    <h3 class="pull-left">
+                      <span class="green" style="font-size: 24px;">☑</span>
+                      Pago <%= "em " + @fatura.paga_em.to_s.gsub("-","/") unless @fatura.paga_em.nil? %>
+                    </h3>
+                  <% else %>
+                    <h3 class="pull-left">
+                      <span class="red" style="font-size: 24px;">❐</span>
+                      Em aberto <small style="color: #73879C;">(até <%= @fatura.vencimento.to_s.gsub("-","/") %>)</small>
+                    </h3>
+                  <% end %>
+                  <h3 class="pull-right" style="font-weight: 300;">
+                      Emitida a <%= @fatura.created_at.to_date.to_s.gsub("-","/") %>
+                    </small>
+                  </h3>
+                  <br />
+                  <br />
+                  <br />
+                </div>
+                <!-- /.col -->
+              </div>
+
+              <!-- Table row -->
+              <div class="row">
+                <div class="col-xs-12 table">
+                  <table class="table table-striped">
+                    <thead>
+                      <tr>
+                        <th>Qtd.</th>
+                        <th>Produto</th>
+                        <th style="width: 59%">Descrição</th>
+                        <th>Subtotal</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <% @fatura.itens.find_each do |i| %>
+                      <tr>
+                        <td><%= i.quantidade %></td>
+                        <td><%= i.produto.nome %></td>
+                        <td><%= i.descricao %></td>
+                        <td><%= valor_formatado(@fatura.moeda, i.valor.to_s) %></td>
+                      </tr>
+                      <% end %>
+                      <tr>
+                        <td class="thick-line"></td>
+                        <td class="thick-line"></td>
+                        <td class="thick-line text-right"><b>Total:</b></td>
+                        <td class="thick-line"><%= valor_formatado(@fatura.moeda, @fatura.valor) %></td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+                <!-- /.col -->
+              </div>
+              <!-- /.row -->
+
+              <% unless @fatura.paga? %>
+              <div class="row">
+                <!-- accepted payments column -->
+                <div class="col-sm-6 col-xs-12">
+                  <p class="lead">Métodos de Pagamento:</p>
+                  <%= image_tag "gateways/visa.png", alt: "Visa" %>
+                  <%= image_tag "gateways/mastercard.png", alt: "Mastercard" %>
+                  <%= image_tag "gateways/american-express.png", alt: "American Express" %>
+                  <%= image_tag "gateways/caixa.png", width: "100", alt: "Caixa" %>
+                  <br /><br />
+                  <%= select(:fatura, :via_de_pagamento, {"Cartão de Crédito" => "CC", "Transferência ou Depósito Bancário" => "TB"}, 
+                             {}, class: "form-control") %>
+                  <br />
+                </div>
+                <!-- /.col -->
+              </div>
+              <!-- /.row -->
+
+              <!-- this row will not appear when printing -->
+              <div class="row">
+                <div class="col-xs-12">
+                  <div id="botoes-fatura">
+                  <button class="btn btn-default hidden-xs" onclick="window.print();"><i class="fa fa-print"></i> Imprimir</button>
+
+                  <!-- Small modal -->
+                  <button type="button" id="pagarButton" class="btn btn-success" data-toggle="modal" data-target=".bs-pagar-modal-sm"><i class="fa fa-credit-card"></i> Pagar</button>
+                  </div>
+
+                  <div class="modal fade bs-pagar-modal-sm" tabindex="-1" role="dialog" aria-hidden="true">
+                    <div class="modal-dialog modal-sm">
+                      <div class="modal-content">
+                        <%= render partial: 'pagar_modal' %>
+                      </div>
+                    </div>
+                  </div> 
+                <% comment do %>
+                  <button class="btn btn-primary pull-right" style="margin-right: 5px;"><i class="fa fa-download"></i> Gerar PDF</button>
+                <% end %>
+                </div>
+              </div> <!-- row -->
+            <% else %>
+              <div class="row no-print">
+                <div class="col-xs-12">
+                  <button class="btn btn-default pull-right" style="margin-right: 5px;" onclick="window.print();"><i class="fa fa-print"></i> Imprimir</button>
+                <% comment do %>
+                  <button class="btn btn-primary pull-right"> <i class="fa fa-download"></i> Gerar PDF</button>
+                <% end %>
+                </div>
+              </div>
+            <% end %>
+            </section>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

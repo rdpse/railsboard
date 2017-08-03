@@ -1,0 +1,45 @@
+<% provide(:title, "Ticket ##{@ticket.id}") %>
+<div class="right_col" role="main" data-ticket-id="<%= @ticket.id %>" data-load="<%= ticket_path(@ticket, format: :js) %>">
+    <div class="page-title">
+      <div class="title_left">
+        <h3>
+          <%= "Ticket #" + @ticket.id.to_s %>
+          <br>
+          <small>
+            <span class="label label-<%= ticket_label(@ticket) %>" style='margin-left: .25em'>
+              <%= ticket_status(@ticket) %>
+            </span>
+          </small>
+        </h3>
+        <br />
+      </div>
+    </div>
+
+    <div class="clearfix"></div> 
+
+    <div id='respostas'>
+      <%= render partial: 'resposta', collection: @respostas %>
+    </div>
+
+  <% unless @ticket.fechado? %>
+    <!-- start accordion -->
+      <div id="responder-accordion" class="row">
+        <div class="col-md-12 col-xs-12">
+          <div class="accordion" id="accordion1" role="tablist">
+            <div class="panel">
+              <a class="panel-heading" style="background: #169F85;" role="tab" id="headingOne1" data-toggle="collapse" data-parent="#accordion1" href="#collapseOne1" aria-expanded="false" aria-controls="collapseOne">
+                <center><h4 class="panel-title" style="color: #fff;">Responder</h4></center>
+              </a>
+              <div id="collapseOne1" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingOne">
+                <div class="panel-body">
+                  <%= render 'responder' %>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    <!-- end accordion -->
+  <% end %>
+  <!-- /page content -->
+</div>

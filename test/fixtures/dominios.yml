@@ -1,0 +1,11 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  nome: MyString
+  cloudflare: false
+  cloudflare_zone_id: MyString
+
+two:
+  nome: MyString
+  cloudflare: false
+  cloudflare_zone_id: MyString

@@ -1,0 +1,70 @@
+<% if @fatura.TB? %>
+  <div class="modal-header">
+    <button type="button" class="close" data-dismiss="modal" aria-label="Fechar"><span aria-hidden="true">×</span>
+    </button>
+    <h4 class="modal-title" id="myModalLabel2">Transferência ou Depósito</h4>
+  </div>
+  <div class="modal-body">
+    <p>
+      <div class="alert alert-info">
+        Envie comprovante da transação.
+      </div>
+    </p>
+    <p>
+      <b>Banco:</b> Caixa Econômica Federal<br />
+      <b>Agência:</b> 2555-0<br />
+      <b>Operação:</b> 013<br />
+      <b>Conta Poupança:</b> 00004651-0
+    </p>
+    <p>
+      <b>Titular:</b> OLIVIO FERNANDES RODRIGUES<br/>
+      <b>CPF:</b> 474.512.205-59
+    </p>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-default" data-dismiss="modal">Fechar</button>
+    <%= link_to "Enviar comprovante", tickets_novo_path, class: "btn btn-primary" %>
+  </div>
+<% elsif @fatura.CC? %>
+  <div class="modal-header">
+    <button type="button" class="close" data-dismiss="modal" aria-label="Fechar"><span aria-hidden="true">×</span>
+    </button>
+    <h4 class="modal-title" id="myModalLabel2">
+      Cartão de Crédito
+      <span id="cc-spinner" class="fa fa-circle-o-notch fa-spin" style="font-size: 18px; margin-left: 0.25em; display: none;"></span>
+    </h4>
+  </div>
+  <div class="modal-body">
+  <%= form_tag stripe_path(@fatura.id), id: "pagar_stripe" do %>
+    <div id="stripe_error">
+      <noscript>JavaScript is not enabled and is required for this form. First enable it in your web browser settings.</noscript>
+    </div>
+    <div class="col-md-12 col-xs-12 form-group">
+      <%= label_tag "", nil, required: true %>
+      <%= text_field_tag :numero_cartao, nil, autofocus: true, class: "form-control", 
+        placeholder: "Número do cartão", required: true,
+        data: {stripe: "number", "inputmask-mask": "9999 9999 9999 9999"} %> 
+      <span class="fa fa-credit-card form-control-feedback right" style="margin-top: 1.7em;" aria-hidden="true"></span>
+    </div>
+    <div class="col-md-6 col-xs-6">
+      <%= label_tag "", nil, required: true %>
+      <%= text_field_tag :validade_cartao, nil, class: "form-control", 
+        placeholder: "MM / YY", required: true,
+        data: {stripe: "exp", "inputmask-mask": "99/99"} %>
+      <span class="fa fa-calendar form-control-feedback right" style="margin-top: 1.7em;" aria-hidden="true"></span>
+    </div>
+    <div class="col-md-6 col-xs-6">
+      <%= label_tag "", nil, required: true %>
+      <%= text_field_tag :cvv_cartao, nil, class: "form-control", 
+        placeholder: "CVC", required: true,
+        data: {stripe: "cvc", "inputmask-regex": "[0-9]{3,4}"} %>
+      <span class="fa fa-lock form-control-feedback right" style="margin-top: 1.7em;" aria-hidden="true"></span>
+    </div>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-default" data-dismiss="modal">Fechar</button>
+    <%= submit_tag "Pagar", id: "pagar-stripe-botao", class: "btn btn-success" %>
+  </div>
+  <% end %>
+<% end %>
+

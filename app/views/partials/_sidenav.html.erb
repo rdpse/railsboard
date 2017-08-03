@@ -1,0 +1,68 @@
+<div class="col-md-3 left_col menu_fixed">
+  <div class="left_col scroll-view">
+    <div class="navbar nav_title" style="border: 0;">
+      <%= link_to root_path, class: "site_title" do %>
+        <i class="fa fa-user"></i> <span>Clientes</span>
+      <% end %>
+    </div>
+
+    <div class="clearfix"></div>
+
+
+    <br />
+
+    <!-- sidebar menu -->
+    <div id="sidebar-menu" class="main_menu_side hidden-print main_menu">
+      <div class="menu_section">
+        <h3>Geral</h3>
+        <ul class="nav side-menu">
+          <li>
+            <%= link_to root_path do %>
+              <i class="fa fa-home"></i> Home
+            <% end %>
+          </li>
+          <% if @hosts.present? %>
+            <li><a><i class="fa fa-cloud"></i> Servidores <span class="fa fa-chevron-down"></span></a>
+              <ul class="nav child_menu" style="display: none;">
+                <% @hosts.find_each do |h| %>
+                  <li><%= link_to "#{h.hostname}", servidor_path(h.hostname) %></li>
+                <% end %>
+              </ul>
+            </li>
+          <% end %>
+          <li>
+            <%= link_to faturas_path do %>
+              <i class="fa fa-credit-card"></i> Faturas
+            <% end %>
+          </li>
+          <% comment do %><li><a><i class="fa fa-tasks"></i> Intervenções</a><% end %>
+          <li><a><i class="fa fa-support"></i> Atendimento</a>
+            <ul class="nav child_menu" style="display: none;">
+              <li><%= link_to "Novo ticket", tickets_novo_path %>
+              <li><%= link_to "Ver tickets", tickets_path %>
+            </ul>
+        </ul>
+      </div>
+    </div>
+    <!-- /sidebar menu -->
+
+    <!-- /menu footer buttons -->
+    <div class="sidebar-footer hidden-small">
+      <% comment do %>
+      <a data-toggle="tooltip" data-placement="top" title="Settings">
+        <span class="glyphicon glyphicon-cog" aria-hidden="true"></span>
+      </a>
+      <a data-toggle="tooltip" data-placement="top" title="FullScreen">
+        <span class="glyphicon glyphicon-fullscreen" aria-hidden="true"></span>
+      </a>
+      <a data-toggle="tooltip" data-placement="top" title="Lock">
+        <span class="glyphicon glyphicon-eye-close" aria-hidden="true"></span>
+      </a>
+      <a data-toggle="tooltip" data-placement="top" title="Logout" href="login.html">
+        <span class="glyphicon glyphicon-off" aria-hidden="true"></span>
+      </a>
+      <% end %>
+    </div>
+    <!-- /menu footer buttons -->
+  </div>
+</div>

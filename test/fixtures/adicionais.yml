@@ -1,0 +1,13 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  descricao: MyText
+  valor: 9.99
+  vencimento: 2017-06-09
+  status: 1
+
+two:
+  descricao: MyText
+  valor: 9.99
+  vencimento: 2017-06-09
+  status: 1
